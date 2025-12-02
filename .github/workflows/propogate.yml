@@ -3,7 +3,7 @@ name: Deploy Hybrid Site
 on:
   push:
     branches:
-      - main  # or master
+      - testee  # or master
 
 jobs:
   build-and-deploy:
@@ -25,7 +25,7 @@ jobs:
       run: npm run build || echo "No build step needed"
 
     - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v6
+      uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./  # Root of repo for static files
