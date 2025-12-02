@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - testee  # or master
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
@@ -13,16 +14,14 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@v3
 
-    - name: Setup Node.js (if using JS build tools)
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-
-    - name: Install dependencies (optional)
-      run: npm install
-
     - name: Build site (optional)
-      run: npm run build || echo "No build step needed"
+      run: |
+        if [ -f package.json ]; then
+          npm install
+          npm run build || echo "No build script found"
+        else
+          echo "No package.json found, skipping build"
+        fi
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
